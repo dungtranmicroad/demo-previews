@@ -1,24 +1,4 @@
 <td>
-  {{#if context.socialMediaStyle}}
-    {{topic-link topic}}
-    {{raw "list/topic-intro" topic=topic
-                             posterNames=context.posterNames
-                             likesHeat=context.view.likesHeat
-                             title=context.view.title}}
-    {{#if showThumbnail}}
-      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
-    {{/if}}
-  {{else}}
-    {{#if context.mobilePreviews}}
-      {{#if showThumbnail}}
-        {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
-      {{/if}}
-    {{else}}
-      <div class='pull-left'>
-        <a href="{{topic.lastPostUrl}}">{{avatar topic.lastPoster imageSize="large"}}</a>
-      </div>
-    {{/if}}
-{{/if}}
   {{~#unless expandPinned}}
   <div class='pull-left'>
     <a href="{{topic.lastPostUrl}}">{{avatar topic.lastPoster imageSize="large"}}</a>
