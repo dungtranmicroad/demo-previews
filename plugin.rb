@@ -119,7 +119,7 @@ after_initialize do
       if SiteSetting.topic_list_hotlink_thumbnails
         thumbs = { normal: object.image_url, retina: object.image_url }
       else
-        thumbs = get_thumbnails || get_thumbnails_from_image_url || get_youtube_thumbnail || extract_url_from_body
+        thumbs = get_thumbnails || get_thumbnails_from_image_url || get_link_thumbnail
       end
       thumbs
     end
@@ -143,19 +143,10 @@ after_initialize do
       image = Upload.get_from_url(object.image_url) rescue false
       return ListHelper.create_thumbnails(object.id, image, object.image_url)
     end
-def get_youtube_thumbnail
-  url = extract_url_from_body
-
-  unless url.blank?
-    client   = video_id::Client.new
-    response = client.video_by(url)
-    self.thumbnail = response.thumbnails.first.url
-  end
-end
-
-def extract_url_from_body
-  URI.extract(body).first
-end
+   def get_link_thumbnail
+   thumbnails = thumbnail
+   end
+    
     def topic_post_actions
       return [] if !scope.current_user
       PostAction.where(post_id: topic_post_id, user_id: scope.current_user.id)
