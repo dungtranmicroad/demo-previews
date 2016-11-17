@@ -119,7 +119,7 @@ after_initialize do
       if SiteSetting.topic_list_hotlink_thumbnails
         thumbs = { normal: object.image_url, retina: object.image_url }
       else
-        thumbs = get_thumbnails || get_thumbnails_from_image_url
+        thumbs = get_thumbnails || get_thumbnails_from_image_url || to_html || yt_onebox_to_html
       end
       thumbs
     end
@@ -143,7 +143,18 @@ after_initialize do
       image = Upload.get_from_url(object.image_url) rescue false
       return ListHelper.create_thumbnails(object.id, image, object.image_url)
     end
+def to_html
+    if video_id && !params['list']
+      video_width = (params['width'] && params['width'].to_i <= 695) ? params['width'] : 480 # embed width
+      video_height = (params['height'] && params['height'].to_i <= 500) ? params['height'] : 270 # embed height
 
+      # Put in the LazyYT div instead of the iframe
+      escaped_title = ERB::Util.html_escape(video_title)
+      "<div class=\"lazyYT\" data-youtube-id=\"#{video_id}\" data-youtube-title=\"#{escaped_title}\" data-width=\"#{video_width}\" data-height=\"#{video_height}\" data-parameters=\"#{embed_params}\"></div>"
+    else
+      yt_onebox_to_html
+    end
+end
     def topic_post_actions
       return [] if !scope.current_user
       PostAction.where(post_id: topic_post_id, user_id: scope.current_user.id)
