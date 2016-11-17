@@ -143,9 +143,7 @@ after_initialize do
       image = Upload.get_from_url(object.image_url) rescue false
       return ListHelper.create_thumbnails(object.id, image, object.image_url)
     end
-   def get_link_thumbnail
-   thumbnails = thumbnail
-   end
+  
     
     def topic_post_actions
       return [] if !scope.current_user
