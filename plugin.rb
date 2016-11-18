@@ -119,7 +119,7 @@ after_initialize do
       if SiteSetting.topic_list_hotlink_thumbnails
         thumbs = { normal: object.image_url, retina: object.image_url }
       else
-        thumbs = get_thumbnails || get_thumbnails_from_image_url
+        thumbs = get_thumbnails || get_thumbnails_from_image_url || image_html
       end
       thumbs
     end
@@ -143,7 +143,15 @@ after_initialize do
       image = Upload.get_from_url(object.image_url) rescue false
       return ListHelper.create_thumbnails(object.id, image, object.image_url)
     end
+def image_html
+          src = data[:image] || data[:thumbnail_url]
+          return if Onebox::Helpers.blank?(src)
 
+          alt    = data[:description]  || data[:title]
+          width  = data[:image_width]  || data[:thumbnail_width]
+          height = data[:image_height] || data[:thumbnail_height]
+          "<img src='#{src}' alt='#{alt}' width='#{width}' height='#{height}'>"
+end
     def topic_post_actions
       return [] if !scope.current_user
       PostAction.where(post_id: topic_post_id, user_id: scope.current_user.id)
