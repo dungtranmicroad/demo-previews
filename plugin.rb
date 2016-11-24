@@ -119,7 +119,7 @@ after_initialize do
       if SiteSetting.topic_list_hotlink_thumbnails
         thumbs = { normal: object.image_url, retina: object.image_url }
       else
-        thumbs = get_thumbnails || get_thumbnails_from_image_url || image_html
+        thumbs = get_thumbnails || get_thumbnails_from_image_url
       end
       thumbs
     end
