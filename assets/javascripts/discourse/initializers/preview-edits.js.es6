@@ -37,7 +37,7 @@ export default {
     });
 
     EditCategorySettings.reopen({
-      choices: ['latest', 'new', 'unread', 'top', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile']
+      choices: ['latest', 'new', 'unread', 'top', 'suggested-topics', 'latest-mobile', 'new-mobile', 'unread-mobile', 'top-mobile', 'suggested-topics-mobile']
     })
 
     TopicList.reopen({
